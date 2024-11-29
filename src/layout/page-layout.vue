@@ -18,20 +18,41 @@
 
 <style lang="less" >
   .move-enter-active {
-    animation: move-in 0.25s ease;
+    animation: puffIn 0.3s;
+    animation-delay: 0.2s;
   }
-  @keyframes move-in {
+  .move-leave-active {
+    animation: vanishOut 0.2s;
+  }
+
+  @keyframes puffIn {
     0% {
-      transform: scale(0.99);
       opacity: 0;
-    }
-    50%{
-      transform: scale(1.01);
-      opacity: 0.1;
+      transform-origin: 50% 50%;
+      transform: scale(1.02, 1.02);
+      filter: blur(2px);
     }
     100% {
-      transform: scale(1);
       opacity: 1;
+      transform-origin: 50% 50%;
+      transform: scale(1, 1);
+      filter: blur(0px);
     }
   }
+  @keyframes vanishOut {
+    0% {
+      opacity: 1;
+      transform-origin: 50% 50%;
+      transform: scale(1, 1);
+      filter: blur(0px);
+    }
+    100% {
+      opacity: 0;
+      transform-origin: 50% 50%;
+      transform: scale(1.03, 1.03);
+      filter: blur(20px);
+    }
+}
+
+
 </style>

@@ -325,6 +325,8 @@
   // 事件: 搜索
   const search = async () => {
     await fetchData({
+      page: 1, 
+      size: 20,
       ...formModel.value,
     } as unknown as OperaLogParams);
   };

@@ -37,7 +37,12 @@ export interface LoginLogParams {
   size?: number;
 }
 
-export type OperaLogParams = LoginLogParams;
+export interface OperaLogParams extends LoginLogParams {
+  username?: string;
+  ip?: string;
+  status?: 0 | 1;
+}
+
 
 export interface LoginLogListRes {
   items: LoginLogRes[];
