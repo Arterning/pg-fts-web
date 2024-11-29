@@ -161,7 +161,8 @@ const highlightedHit = (hit: string | undefined) => {
 <style scoped lang="less">
 .nav-btn {
   display: flex;
-  place-items: center;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-title {

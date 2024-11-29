@@ -40,7 +40,8 @@
       position: relative;
       display: flex;
       flex: 1;
-      place-items: center;
+      justify-content: center;
+      align-items: center;
       padding-bottom: 40px;
     }
 
