@@ -42,8 +42,7 @@
 <style lang="less" scoped>
   .banner {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    place-items: center;
 
     &-inner {
       flex: 1;
@@ -57,8 +56,7 @@
     &-item {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      place-items: center;
       height: 100%;
     }
 

@@ -189,15 +189,15 @@
   }
 
   .link-activated {
-    color: rgb(var(--primary-6));
+    background-color: #13c2c2;
 
-    .tag-link {
-      color: rgb(var(--primary-6));
-    }
+    // .tag-link {
+    //   color: #13c2c2;
+    // }
 
-    & + .arco-tag-close-btn {
-      color: rgb(var(--primary-6));
-    }
+    // & + .arco-tag-close-btn {
+    //   color: #13c2c2;
+    // }
   }
 
   :deep(.arco-dropdown-option-content) {

@@ -7,8 +7,7 @@
 <style lang="less" scoped>
   .footer {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    place-items: center;
     height: 40px;
     color: var(--color-text-2);
     text-align: center;

@@ -161,8 +161,7 @@ const highlightedHit = (hit: string | undefined) => {
 <style scoped lang="less">
 .nav-btn {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  place-items: center;
 }
 
 .modal-title {
@@ -186,7 +185,7 @@ const highlightedHit = (hit: string | undefined) => {
 
 .del {
   cursor: pointer;
-  color: rgb(22, 93, 255);
+  color: #13c2c2;
 }
 
 .time {
@@ -219,20 +218,13 @@ const highlightedHit = (hit: string | undefined) => {
 
 .history-item:hover,
 .ResultItem:hover {
-  background-color: #13c2c2;
+  color: #13c2c2;
   opacity: 1.5;
   cursor: pointer;
 }
 
 .delete-icon {
   float: right;
-  cursor: pointer;
-  display: none;
-  color: rgb(22, 93, 255);
-}
-
-.history-item:hover .delete-icon {
-  display: block;
 }
 
 .history {
