@@ -1,9 +1,9 @@
 <template>
   <router-view v-slot="{ Component, route }">
     <Transition name="move">
-      <!-- <keep-alive> -->
+      <keep-alive>
         <component :is="Component" :key="route.fullPath" />
-      <!-- </keep-alive> -->
+      </keep-alive>
     </Transition>
   </router-view>
 </template>
