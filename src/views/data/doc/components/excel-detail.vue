@@ -28,6 +28,7 @@
         :columns="columns" 
         :data="filteredData" 
         column-resizable 
+        :hoverable="false"
         :bordered="{cell:true}"
         :ellipsis="true"
         :scroll="scrollPercent" />

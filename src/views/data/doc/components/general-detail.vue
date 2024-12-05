@@ -26,7 +26,7 @@
             </a-descriptions-item>
  
             <a-descriptions-item label="摘要">
-                <pre>
+                <pre class="content-box">
                 {{ info.desc }}
                 </pre>
             </a-descriptions-item>
