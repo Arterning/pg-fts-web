@@ -1,10 +1,10 @@
 <template>
-    <a-space direction="vertical">
+    <a-space direction = "vertical">
         <a-descriptions :column="1">
             <a-descriptions-item label="标题">
                 {{ info.title }}
             </a-descriptions-item>
-            <a-descriptions-item label="邮件头" v-if="info.type==='email'" >
+            <a-descriptions-item v-if="info.type === 'email'" label="邮件头">
                 <a-divider />
                 <div class="email-title flex mb-2">   
                     <div class="email-label">主题</div>
@@ -12,11 +12,11 @@
                 </div>
                 <div class="flex mb-1">
                     <div class="email-label">发件人</div>
-                    <div :class="info.email_from?'email-person':''">{{ info.email_from || '-' }}</div>
+                    <div :class="info.email_from? 'email-person':''">{{ info.email_from || '-' }}</div>
                 </div>
                 <div class="flex mb-1">
                     <div class="email-label">收件人</div>
-                    <div :class="info.email_to?'email-person':''">{{ info.email_to || '-' }}</div>
+                    <div :class="info.email_to? 'email-person':''">{{ info.email_to || '-' }}</div>
                 </div>
                 <div class="flex">
                     <div class="email-label">时间</div>
@@ -34,23 +34,23 @@
                 <keep-alive>
                     <a-tooltip content="点击以查看">
                         <a-image
+                            v-if="info.type === 'picture'"
                             height="480"
                             width="100%"
                             fit="contain"
                             class="image"
-                            v-if="info.type==='picture'"
                             :src="buildSrcURL(info.file)"
                         />
                     </a-tooltip>
                 </keep-alive>
                 <keep-alive>
-                    <div class="media-box" v-if="info.type==='media'">
+                    <div v-if="info.type === 'media'" class="media-box">
                         <icon-music class="media-icon" />
                         <video :src="buildSrcURL(info.file)" class="video" controls></video>
                     </div>
                 </keep-alive>
                 <keep-alive>
-                    <iframe v-if="info.type==='pdf'" :src="buildSrcURL(info.file)" class="pdf" frameborder="0"></iframe>
+                    <iframe v-if="info.type === 'pdf'" :src="buildSrcURL(info.file)" class="pdf" frameborder="0"></iframe>
                 </keep-alive>
             </a-descriptions-item>
             <a-descriptions-item label="内容" >
@@ -157,7 +157,7 @@
 /* 设置滚动条滑块的颜色 */
 ::-webkit-scrollbar-thumb {
     background: #999;
-    border-radius: 1rem
+    border-radius: 1rem;
 }
 
 /* 设置滚动条滑块在悬停时的颜色 */

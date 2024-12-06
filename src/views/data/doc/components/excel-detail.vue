@@ -1,5 +1,5 @@
 <template>
-    <a-space direction="vertical" style="max-width:100vw">
+    <a-space direction="vertical">
         <a-descriptions :column="1" >
             <a-descriptions-item label="标题">
                 {{ title }}
@@ -11,6 +11,7 @@
                 <a-link @click="handleView(file)">查看</a-link>
             </a-descriptions-item>
         </a-descriptions>
+        
     </a-space>
     <a-row :gutter="24" style="margin: 10px 0;">
         <a-col :span="12"><a-input v-model="term" @press-enter="search" placeholder="搜索"/></a-col>

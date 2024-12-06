@@ -30,6 +30,9 @@
         </a-tooltip>
       </li>
       <li>
+        <AIChat />
+      </li>
+      <li>
         <a-tooltip :content="$t('settings.language')">
           <a-button
             :shape="'circle'"
@@ -165,6 +168,7 @@
   import Menu from '@/components/menu/index.vue';
   import { IconUser } from '@arco-design/web-vue/es/icon';
   import GlobalSearch from '@/components/global-search/index.vue';
+  import AIChat from '@/components/aichat/index.vue';
 
   const appStore = useAppStore();
   const userStore = useUserStore();

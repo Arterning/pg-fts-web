@@ -4,7 +4,7 @@
       <icon-search />
     </template>
   </a-button>
-  <a-modal v-model:visible="visible" @ok="handleOk" @cancel="handleCancel" fullscreen>
+  <a-modal v-model:visible="visible" :footer="false" @ok="handleOk" @cancel="handleCancel" fullscreen>
     <template #title>
       <a-space direction="vertical" size="large" class="modal-title">
         <a-input v-model="searchQuery" class="search" placeholder="Search" allow-clear @input="handleInput" @clear="showHistory=true">

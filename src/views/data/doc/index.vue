@@ -61,4 +61,3 @@ import EmailTable from '@/views/data/doc/components/email-table.vue'
 import ExcelTable from '@/views/data/doc/components/excel-table.vue'
 import Footer from '@/components/footer/index.vue';
 </script>
-  

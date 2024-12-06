@@ -1,5 +1,5 @@
 export function tableDateFormat(dateStr: string): string {
-  if (!dateStr) return "";
+  if (!dateStr) return '';
   const date = new Date(dateStr);
 
   const year = date.getFullYear();
@@ -16,8 +16,8 @@ export function tableDateFormat(dateStr: string): string {
 
 
 export function emailDateFormat(dateStr: string): string {
-  if (!dateStr) return "-";
-  const daysOfWeek = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+  if (!dateStr) return '-';
+  const daysOfWeek = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
   const date = new Date(dateStr);
 
   const year = date.getFullYear();
@@ -29,7 +29,7 @@ export function emailDateFormat(dateStr: string): string {
   const minutes = date.getMinutes().toString().padStart(2, '0');
 
   // 根据小时数判断上午/下午
-  const period = hours < 12 ? "上午" : "下午";
+  const period = hours < 12 ? '上午' : '下午';
   const formattedHour = hours % 12 === 0 ? 12 : hours % 12;
 
   return `${year}年${month}月${day}日（${dayOfWeek}）${period}${formattedHour} : ${minutes}`;

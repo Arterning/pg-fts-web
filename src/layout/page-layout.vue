@@ -52,7 +52,5 @@
       transform: scale(1.03, 1.03);
       filter: blur(20px);
     }
-}
-
-
+  }
 </style>
