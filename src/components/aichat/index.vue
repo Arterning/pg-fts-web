@@ -19,6 +19,15 @@
     visible.value = true;
   }
 
+  // 生成一个新会话对象返回
+  const getDefaultSession = () => {
+    return {
+          id: `${formatted.value}-${sessionList.value.length}`,
+          topic: '新对话',
+          messages: [],
+          updatedAt: formatted.value,
+        };
+  }
   
   // 判断是否正在等待响应，如果在等待则不能切换会话,接收emit事件
   const handleLoading = (loading: boolean) => {
@@ -37,28 +46,36 @@
   const handleDeleteSession = (session: ChatSession) => {
     const index = sessionList.value.findIndex((s) => s.id === session.id);
     sessionList.value.splice(index, 1);
-    // 删除后切换到第一个会话
-    activeSession.value = { ...sessionList.value[0] };
+    if(sessionList.value.length === 0){ // 删除完了
+      sessionList.value = [ getDefaultSession() ]; // 新建默认
+    }
+    else {
+      // 删除后切换到第一个会话
+      activeSession.value = { ...sessionList.value[0] };
+    }
     localStorage.setItem('sessionList', JSON.stringify(sessionList.value));
   };
 
   // 新增会话
   const handleCreateSession = () => {
     // sessionList头部插入一个新的会话，模拟新增会话
-    sessionList.value.unshift({
-      id: `${formatted.value}-${sessionList.value.length}`,
-      topic: '新对话',
-      messages: [],
-      updatedAt: formatted.value,
-    });
+    sessionList.value.unshift(getDefaultSession());
     // 切换到新增的会话
     handleSessionSwitch(sessionList.value[0]);
     localStorage.setItem('sessionList', JSON.stringify(sessionList.value));
   };
 
+  // 清空会话
+  const handleClearSession = () => {
+    sessionList.value = [getDefaultSession()];
+    activeSession.value = { ...sessionList.value[0] };
+    localStorage.setItem('sessionList', JSON.stringify(sessionList.value));
+  }
+
   // 成功接收消息后，保存会话列表到本地存储
   const saveSessions = (session: ChatSession) => {
-    activeSession.value = session;
+    const index = sessionList.value.findIndex((s) => s.id === session.id);
+    sessionList.value[index] = session;
     localStorage.setItem('sessionList', JSON.stringify(sessionList.value));
   };
 
@@ -67,6 +84,9 @@
     const localSessionList = localStorage.getItem('sessionList');
     if (localSessionList) {
       sessionList.value = JSON.parse(localSessionList);
+    }
+    else{
+      sessionList.value = [getDefaultSession()];
     }
     // 默认选中第一个会话
     handleSessionSwitch(sessionList.value[0]);
@@ -77,49 +97,6 @@
     localStorage.setItem('sessionList', JSON.stringify(sessionList.value));
   });
 
-  const testSession = {
-    id: '2024-12-05 14:03:09-4',
-    topic: '测试1',
-    messages:[
-      {
-        sender: 'user',
-        content: '叽里呱啦',
-        timestamp: 'Mon Aug 27 2018 20:59:22 GMT+0800',
-        status: 'success',
-      },
-      {
-        sender: 'bot',
-        content: '乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦乌里哇啦',
-        timestamp: 'Mon Aug 27 2018 21:59:22 GMT+0800',
-        status: 'success',
-      },
-      {
-        sender: 'user',
-        content: '歪比巴卜',
-        timestamp: 'Mon Aug 27 2018 20:59:26 GMT+0800',
-        status: 'success',
-      },
-      {
-        sender: 'bot',
-        content: '歪比歪比',
-        timestamp: 'Mon Aug 27 2018 20:59:46 GMT+0800',
-        status: 'success',
-      },
-      {
-        sender: 'user',
-        content: '歪比巴卜',
-        timestamp: 'Mon Aug 27 2018 21:00:26 GMT+0800',
-        status: 'success',
-      },
-      {
-        sender: 'bot',
-        content: '歪比歪比',
-        timestamp: 'Mon Aug 27 2018 21:39:46 GMT+0800',
-        status: 'success',
-      },
-    ],
-    updatedAt: '2024-12-05 14:03:09'
-  }
 </script>
 
 <template>
@@ -136,17 +113,30 @@
 
     <div class="layout-content">
       <div class="layout-sider"> 
-        <div class="add-btn">
-          <a-button
-            type="text"
-            @click="handleCreateSession"
-            long
-          >
-            <span> 新建对话 </span>
-            <icon-plus />
-          </a-button>
+        <div class="btn-line">
+          <div class="delete-btn">
+            <a-button
+              type="text"
+              @click="handleClearSession"
+              long
+              v-if="sessionList && sessionList.length>1"
+            >
+              <icon-delete />
+              <span> 清空对话 </span>
+            </a-button>
+          </div>
+          <div class="add-btn">
+            <a-button
+              type="text"
+              @click="handleCreateSession"
+              long
+            >
+              <span> 新建对话 </span>
+              <icon-plus />
+            </a-button>
+          </div>
         </div>
-        
+
         <div class="session-list">
           <SessionItem
             v-for="session in sessionList"
@@ -175,13 +165,14 @@
 <style lang="less" scoped>
   .layout-content{
     max-height: 100%;
-    // overflow: hidden;
     display: flex;
   }
   .layout-sider{
-    min-width: 220px;
+    width: 220px;
   }
-  .add-btn{
+  .btn-line{
+    display: flex;
+    justify-content: end;
     margin-right: 1rem;
     margin-bottom: 0.5rem;
   }

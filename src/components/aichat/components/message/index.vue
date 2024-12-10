@@ -1,41 +1,36 @@
 <script lang="ts" setup>
-  import { useAppStore } from '@/store';
-  import { computed, onMounted } from 'vue';
+  import { computed } from 'vue';
+  import  { marked } from 'marked';
+  import katex from 'katex';
+  import 'katex/dist/katex.min.css';  
+
   import { Message } from '../types';
 
-  const appStore = useAppStore();
-
   // message：接受消息对象，展示消息内容和头像，并且根据角色调整消息位置。
-  // avatar：用户头像，如果角色是 Assistant则使用 logo。
   const props = defineProps<{
     message: Message;
-    avatar: string;
-    darkMode?: boolean;
   }>();
 
-  // const computedClass = computed(() => {
-  //   if (props.message.sender === 'user') {
-  //     return props.darkMode
-  //       ? 'dark:bg-cyan-800/50 dark:border-gray-700'
-  //       : 'bg-cyan-50/20 border-gray-700';
-  //   } else if (props.message.sender === 'bot') {
-  //     return props.darkMode
-  //       ? 'dark:bg-slate-800 dark:border-gray-700'
-  //       : 'bg-slate-800 border-gray-700';
-  //   }
-  //   return '';
-  // });
+  const botAnswer = computed(() => {
+    const raw = props.message.content as string;
+    // 处理内联数学公式（比如: \( ... \)）
+    let htmlContent = raw.replace(
+      /\\\((.*?)\\\)/g,  // 匹配 \( ... \)
+      (_: any, formula: string) => `<span class="katex">${katex.renderToString(formula)}</span>`
+    );
 
-  // const computedTheme = computed(() => {
-  //   if (props.darkMode) {
-  //     if (appStore.theme === 'dark') {
-  //       return 'dark';
-  //     }
-  //     return '';
-  //   } else {
-  //     return 'dark';
-  //   }
-  // });
+    // 处理块级数学公式（比如: \[ ... \]）
+    htmlContent = htmlContent.replace(
+      /\\\[(.*?)\\\]/gs,  // 匹配 \[ ... \]
+      (_: any, formula: string) => `<div class="katex">${katex.renderToString(formula)}</div>`
+    );
+    
+    // 处理markdown格式
+    htmlContent = marked(htmlContent) as string; 
+
+    return htmlContent;
+  })
+
 </script>
 <template>
   <div class="msg"
@@ -44,17 +39,14 @@
       <IconRobot />
     </a-avatar>
     <div class="chat-area">
-      <a-card class="chat-card">
-        <div v-if="message.status==='waiting'">
-          <a-spin />
-        </div>
-        <div v-else-if="message.status==='success'">
-          {{ message.content }}
-        </div>        
-        <div v-else-if="message.status==='failure'" class="fail-response">
-          <icon-exclamation-polygon-fill /> {{ message.content }}
-        </div>
-      </a-card>
+      <div v-if="message.status==='waiting'">
+        <a-spin />
+      </div>
+      <div v-else-if="message.status==='success'&&message.sender==='bot'" v-html="botAnswer" class="markdown-body"></div>        
+      <div v-else-if="message.status==='success'&&message.sender==='user'">{{ message.content }}</div> 
+      <div v-else-if="message.status==='failure'" class="fail-response">
+        <icon-exclamation-polygon-fill /> {{ message.content }}
+      </div>
     </div>
     <a-avatar v-if="message.sender === 'user'">
       <IconUser />
@@ -63,22 +55,53 @@
 </template>
 
 <style lang="less" scoped>
-  .chat-card{
-    margin: 0 1rem 1rem;
-    padding: 0 !important;
-    max-width: 80%;
-  }
+	.markdown-body {
+		box-sizing: border-box;
+		min-width: 960px;
+    max-width: 1024px;
+    background: transparent;
+    color: var(--color-text-2);
+    line-height: 2rem;
+	}
+	@media (max-width:1600px) {
+		.markdown-body {
+      min-width: 650px;
+		}
+	}
+	@media (max-width:1024px) {
+		.markdown-body {
+      min-width: 540px;
+      width: 540px;
+		}
+	}
   .msg{
+    position: relative;
     display: flex;
   }
   .avator{
     min-width: 3rem;
   }
+
+  .chat-area{
+    overflow: hidden;
+    margin: 0 1rem 1rem 1rem;
+    display: block;
+    padding: 1rem 1rem;
+    line-height: 1.5rem;
+  }
   .user-mode{
     justify-content: end;
+    .chat-area{
+      background: var(--color-bg-2);
+      box-shadow: 0 0 2px var(--color-text-3);
+      border-radius: 0.5rem;
+    }
   }
   .bot-mode{
     justify-content: start;
+  }
+  .fail-response{
+    color:  var(--color-text-2);
   }
   :deep(.md-editor-preview-wrapper) {
     padding: 4px;

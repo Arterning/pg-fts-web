@@ -75,7 +75,7 @@
 
     .tab-bar-box {
       display: flex;
-      padding: 0 0 0 20px;
+      padding: 0 0 0 1rem;
       background-color: var(--color-bg-2);
       border-bottom: 1px solid var(--color-border);
 

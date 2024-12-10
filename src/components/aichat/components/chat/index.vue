@@ -9,9 +9,8 @@
 
   const formatted = useDateFormat(useNow(), 'YYYY-MM-DD HH:mm:ss');
   const message = ref('');
-  // const isWaitingForResponse = ref(false);
   const activeSession = ref<ChatSession>({} as ChatSession);
-  const avatarUrl = ref('');
+  // const avatarUrl = ref('');
   const contentBox = ref<HTMLElement | null>(null);
   const isEdit = ref(false);
   const props = defineProps<{
@@ -40,12 +39,6 @@
       scrollToBottom();
     }
   );
-
-  // 更新会话
-  const handleUpdateSession = () => {
-    isEdit.value = false;
-    emits('save', activeSession.value);
-  };
 
   // shift + enter 换行, enter 发送消息
   function handleKeyPress(event: KeyboardEvent) {
@@ -81,14 +74,13 @@
             clearInterval(timer);
             resolve();
           }
-        }, 10);
+        }, 50);
       });
     } catch (error) {
       callback("请求失败", "failure");
       return Promise.resolve(); 
     }
   }
-
 
   async function sendMessage() {
     
@@ -105,7 +97,6 @@
       status: 'success'
     });
     const question = message.value;
-    const temp = message.value;
     message.value = '';
     scrollToBottom();
     
@@ -123,11 +114,12 @@
         activeSession.value.messages[
           activeSession.value.messages.length - 1
         ].status = status;
+        
         if( status === 'success'){
           activeSession.value.topic = answer.substring(0, 10);
         }
         if( status === 'failure'){
-          message.value = temp;
+          message.value = question;
         }
       })
       
@@ -135,7 +127,6 @@
       emits('loading', false);
       emits('save', activeSession.value);
     }
-
 
 
   // 滚动到底部
@@ -149,100 +140,6 @@
   };
   const store = useAppStore();
 
-  
-  // const textareaWrapperStyle = computed(() => {
-  //   if (props.darkMode) {
-  //     if (store.theme === 'dark') {
-  //       return { '--focus-bg-color': '#1f2937', '--hover-bg-color': '#1f2937' };
-  //     } else {
-  //       return { '--focus-bg-color': '#f0f0f0', '--hover-bg-color': '#f0f0f0' };
-  //     }
-  //   } else {
-  //     return { '--focus-bg-color': '#1f2937', '--hover-bg-color': '#1f2937' };
-  //   }
-  // });
-
-  // async function sendMessage() {
-  //   if (isWaitingForResponse.value || !message.value.trim()) {
-  //     return;
-  //   }
-  //   isWaitingForResponse.value = true;
-
-  //   // 发送消息后，将消息添加到当前会话的消息列表中
-  //   activeSession.value.messages.push({
-  //     sender: 'user',
-  //     content: message.value,
-  //     timestamp: formatted.value,
-  //   });
-  //   message.value = '';
-  //   scrollToBottom();
-  //   // const answer = await getChatResponse(question);
-  //   activeSession.value.messages.push({
-  //     sender: 'bot',
-  //     content: '',
-  //     timestamp: formatted.value,
-  //   });
-  //   // 获取最近的五条消息和当前消息,合并成一个字符串
-  //   const question = activeSession.value.messages
-  //     .slice(-HISTORY_SIZE)
-  //     .map((m) => m.content)
-  //     .join(' ');
-  //   await getSseResponse(question);
-  //   isWaitingForResponse.value = false;
-  //   emits('save', activeSession.value);
-  //   emits('loading', false);
-  // }
-
-  // const messageQueue = ref<string[]>([]);
-  // const isProcessingQueue = ref(false);
-
-  // let url = '/api/v1/data/ai/sse';
-  // if (import.meta.env.VITE_API_BASE_URL) {
-  //   url = `${import.meta.env.VITE_API_BASE_URL}/api/v1/data/ai/sse`;
-  // }
-
-  // let retryCount = 0;
-  // let controller: AbortController | null = null;
-  // async function getSseResponse(
-  //   question: string,
-  //   maxRetries: number = MAX_RETRIES,
-  //   baseUrl: string = url
-  // ) {
-  //   try {
-  //     controller = new AbortController();
-  //     await fetchEventSource(baseUrl, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json;charset=utf-8',
-  //       },
-  //       body: JSON.stringify({
-  //         question,
-  //       }),
-  //       signal: controller.signal, //
-
-  //       async onmessage(ev: any) {
-  //         const newContent = ev.data;
-  //         if (newContent) {
-  //           messageQueue.value.push(newContent);
-  //           processQueue();
-  //         }
-  //       },
-  //       onclose() {
-  //         console.log('SSE connection closed');
-  //       },
-
-  //       onerror(err) {
-  //         console.log('SSE connection error:', err);
-  //         handleSseError(err, maxRetries);
-  //       },
-  //     });
-  //     retryCount = 0; // Reset retry counter
-  //   } catch (err) {
-  //     console.error('An error occurred during SSE request:', err);
-  //     handleSseError(err, maxRetries);
-  //   }
-  // }
-
   function terminatConnection() {
     emits('loading', false);
     // 如果message.content为空，则删除该消息
@@ -252,134 +149,24 @@
       activeSession.value.messages.pop();
     }
     emits('save', activeSession.value);
-    // if (controller) {
-    //   console.log('SSE connection terminated.');
-    //   controller.abort();
-    //   controller = null; // Reset the controller after aborting.
-    //   // 如果用户手动终止了SSE连接，则不再等待响应
-    //   emits('loading', false);
-    //   // 如果message.content为空，则删除该消息
-    //   if (
-    //     !activeSession.value.messages[activeSession.value.messages.length - 1].content
-    //   ) {
-    //     activeSession.value.messages.pop();
-    //   }
-    // }
   }
-
-  // function handleSseError(err: any, maxRetries: number = MAX_RETRIES) {
-  //   if (retryCount < maxRetries) {
-  //     retryCount += 1;
-  //     // console.log(`Retrying (${retryCount}/${maxRetries})...`);
-  //     setTimeout(() => {
-  //       getSseResponse(
-  //         activeSession.value.messages[activeSession.value.messages.length - 2]
-  //           .content,
-  //         maxRetries
-  //       );
-  //     }, RETRY_INCREMENT_MS * retryCount); // Incremental retry delay
-  //   } else {
-  //     // console.error('Max retries reached. Stopping retries.');
-  //     isWaitingForResponse.value = false;
-  //     throw err;
-  //   }
-  // }
-
-  // function processQueue() {
-  //   if (isProcessingQueue.value) return;
-
-  //   isProcessingQueue.value = true;
-  //   const messageIndex = activeSession.value.messages.length - 1;
-  //   const msg = activeSession.value.messages[messageIndex];
-
-  //   const processNext = () => {
-  //     if (messageQueue.value.length === 0) {
-  //       isProcessingQueue.value = false;
-  //       return;
-  //     }
-
-  //     const text = messageQueue.value.shift();
-  //     if (text) {
-  //       displayText(text, msg, 0, processNext);
-  //     }
-  //   };
-
-  //   processNext();
-  // }
-
-  // function displayText(
-  //   text: string,
-  //   msg: any,
-  //   index: number,
-  //   callback: () => void,
-  //   chunkSize: number = DISPLAY_TEXT_CHUNK_SIZE,
-  //   delayMs: number = DISPLAY_TEXT_INCREMENT_MS
-  // ) {
-  //   const nextIndex = Math.min(index + chunkSize, text.length);
-  //   msg.content += text.substring(index, nextIndex);
-
-  //   scrollToBottom();
-  //   if (nextIndex < text.length) {
-  //     setTimeout(() => {
-  //       displayText(text, msg, nextIndex, callback, chunkSize, delayMs);
-  //     }, delayMs);
-  //   } else {
-  //     callback();
-  //   }
-  // }
-  // // 滚动到底部
-  // const scrollToBottom = async () => {
-  //   await nextTick(() => {
-  //     contentBox.value?.scrollTo({
-  //       top: contentBox.value.scrollHeight,
-  //       behavior: 'smooth',
-  //     });
-  //   });
-  // };
 </script>
 
 <template>
   <div class="chat-container">
     <!-- 聊天头部，显示当前会话主题和编辑按钮 -->
-    <div
+    <!-- <div
       class="chat-header"
       v-if="!props.hiddenHeader"
     >
     {{ props.session.topic }}
-      <!-- <div>
-        <div
-          v-if="isEdit"
-        >
-          <a-input
-            v-model="activeSession.topic"
-            @keydown.enter="handleUpdateSession"
-          ></a-input>
-        </div>
-        <div
-          v-else
-        >
-          {{ activeSession.topic }}
-        </div>
-        <div
-          :class="[
-            'text-sm mt-1',
-            { 'text-gray-400': true, 'dark:text-gray-400': darkMode },
-          ]"
-        >
-          与AI的 {{ activeSession.messages?.length }} 条对话
-        </div>
-      </div> -->
-      <!-- 编辑和关闭按钮 -->
-      <!-- <icon-edit @click="isEdit = true" v-if="!isEdit" class="cursor-pointer" />
-      <icon-close @click="isEdit = false" v-else class="cursor-pointer" /> -->
-    </div>
+    </div> -->
 
     <div ref="contentBox" class="chat-content">
       <h1 class="start-tip" v-if="props.session.messages.length===0">有什么可以帮助的？</h1>
       <template v-for="(message, index) in props.session.messages" :key="index">
         <Message
           :message="message"
-          :avatar="avatarUrl"
           :dark-mode="darkMode"
         ></Message>
       </template>
@@ -428,7 +215,7 @@
 <style lang="less" scoped>  
   .chat-container{
 
-    padding: 1.25rem;
+    padding: 1.25rem 10vw;
     min-width: 720px;
     display: flex;
     flex: 1;
@@ -441,9 +228,11 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    font-size: large;
   }
   .chat-content{
     flex: 1;
+    padding-top: 0.25rem;
     padding-right: 1rem;
     overflow-y: scroll;
   }

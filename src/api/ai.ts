@@ -6,5 +6,5 @@ export interface Prompt {
 
 
 export function chat(params: Prompt): Promise<string> {
-  return axios.post('/api/v1/chat/completions', params);
+  return axios.post('/api/v1/sys/chat', params);
 }

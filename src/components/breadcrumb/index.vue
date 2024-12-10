@@ -44,6 +44,7 @@
 <style lang="less" scoped>
   .container-breadcrumb {
     margin: 16px 0;
+    margin-left: 1rem;
 
     :deep(.arco-breadcrumb-item) {
       color: rgb(var(--gray-6));
