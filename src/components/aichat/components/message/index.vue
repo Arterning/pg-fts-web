@@ -31,6 +31,10 @@
     return htmlContent;
   })
 
+  const userQuestion = computed(()=>{
+    return props.message.content;
+  })
+
 </script>
 <template>
   <div class="msg"
@@ -43,19 +47,23 @@
         <a-spin />
       </div>
       <div v-else-if="message.status==='success'&&message.sender==='bot'" v-html="botAnswer" class="markdown-body"></div>        
-      <div v-else-if="message.status==='success'&&message.sender==='user'">{{ message.content }}</div> 
+      <div v-else-if="message.status==='success'&&message.sender==='user'" v-html="userQuestion" class="user-question"></div> 
       <div v-else-if="message.status==='failure'" class="fail-response">
         <icon-exclamation-polygon-fill /> {{ message.content }}
       </div>
     </div>
-    <a-avatar v-if="message.sender === 'user'">
+    <a-avatar v-if="message.sender === 'user'" class="avator">
       <IconUser />
     </a-avatar>
   </div>
 </template>
 
 <style lang="less" scoped>
+  .msg{
+    display: flex;
+  }
 	.markdown-body {
+    // font-size: 15px;
 		box-sizing: border-box;
 		min-width: 960px;
     max-width: 1024px;
@@ -74,31 +82,28 @@
       width: 540px;
 		}
 	}
-  .msg{
-    position: relative;
-    display: flex;
-  }
+
   .avator{
     min-width: 3rem;
   }
 
   .chat-area{
-    overflow: hidden;
-    margin: 0 1rem 1rem 1rem;
-    display: block;
-    padding: 1rem 1rem;
-    line-height: 1.5rem;
+    margin: 0.5rem 1rem 1rem 1rem;
+    flex: 1;
+    min-width: 960px;
+    max-width: 1024px;
+    white-space: wrap;
   }
-  .user-mode{
-    justify-content: end;
-    .chat-area{
-      background: var(--color-bg-2);
-      box-shadow: 0 0 2px var(--color-text-3);
-      border-radius: 0.5rem;
-    }
-  }
-  .bot-mode{
-    justify-content: start;
+  .user-question{
+    float: right;
+    max-width: 480px;
+    background: var(--color-bg-2);
+    box-shadow: 0 0 2px var(--color-text-3);
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    word-wrap: break-word;
+    word-break: normal;
+    // font-size: 15px;
   }
   .fail-response{
     color:  var(--color-text-2);

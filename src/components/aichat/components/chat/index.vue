@@ -12,7 +12,6 @@
   const activeSession = ref<ChatSession>({} as ChatSession);
   // const avatarUrl = ref('');
   const contentBox = ref<HTMLElement | null>(null);
-  const isEdit = ref(false);
   const props = defineProps<{
     session: ChatSession;
     hiddenHeader?: boolean;
@@ -61,20 +60,22 @@
   ): Promise<void> {
     try {
       const answer = await chat({ question });
+      // const answer = "根据提供的上下文信息，PLL（Polymer Light Emitting Diode的缩写）并没有直接提及。不过，根据您的问题的格式，我假设您可能想询问的是“PLG（Power Line Communication）”的成员单位。根据提供的信息，PLG成员单位包括：\n\n- 株式会社e-Mobility Power\n- 株式会社ENEO\n- SENECHANGE 株式会社\n- Terra Charge 株式会社\n- 合同会社DMM.com\n- 中日本高速道路株式会社\n- 西日本高速道路株式会社\n- 日本充電インフラ株式会社\n- 株式会社パワーエックス\n- 東日本高速道路株式会社\n- 株式会社プラゴユア\n- スタンド株式会社\n- ユビ電株式会社\n\n请注意，这里提供的信息是基于对您问题的推测，因为原始信息中并没有直接提到PLL或PLG。如果您想了解特定组织或技术的成员单位，请提供更具体的信息。"
+      const count = Math.ceil(answer.length / 10); // 分10段输出
       return new Promise((resolve) => {
         let i = 0;
         const timer = setInterval(() => {
           if (i < answer.length) {
             callback(answer.slice(0, i + 1), "success");
-            i += 5;
+            i += count;
           } else {
-            if (i < answer.length + 5) {
+            if (i < answer.length + count) {
               callback(answer, "success");
             }
             clearInterval(timer);
             resolve();
           }
-        }, 50);
+        }, 50); // 每段间隔50ms
       });
     } catch (error) {
       callback("请求失败", "failure");
@@ -92,12 +93,15 @@
     // 发送消息后，将消息添加到当前会话的消息列表中
     activeSession.value.messages.push({
       sender: 'user',
-      content: message.value,
+      content: message.value.replace(/\n/g, "<br>"),
       timestamp: formatted.value,
       status: 'success'
     });
+    
     const question = message.value;
+    activeSession.value.topic = question.substring(0, 10); // 更新会话主题
     message.value = '';
+    emits('save', activeSession.value);
     scrollToBottom();
     
     activeSession.value.messages.push({
@@ -114,18 +118,13 @@
         activeSession.value.messages[
           activeSession.value.messages.length - 1
         ].status = status;
-        
-        if( status === 'success'){
-          activeSession.value.topic = answer.substring(0, 10);
-        }
         if( status === 'failure'){
           message.value = question;
         }
       })
-      
+      emits('save', activeSession.value);
       scrollToBottom();
       emits('loading', false);
-      emits('save', activeSession.value);
     }
 
 
@@ -154,14 +153,6 @@
 
 <template>
   <div class="chat-container">
-    <!-- 聊天头部，显示当前会话主题和编辑按钮 -->
-    <!-- <div
-      class="chat-header"
-      v-if="!props.hiddenHeader"
-    >
-    {{ props.session.topic }}
-    </div> -->
-
     <div ref="contentBox" class="chat-content">
       <h1 class="start-tip" v-if="props.session.messages.length===0">有什么可以帮助的？</h1>
       <template v-for="(message, index) in props.session.messages" :key="index">
@@ -214,27 +205,26 @@
 
 <style lang="less" scoped>  
   .chat-container{
-
     padding: 1.25rem 10vw;
     min-width: 720px;
     display: flex;
-    flex: 1;
-    flex-shrink: 0;
     height: 100%;
     flex-direction: column;
   }
-  .chat-header{
-    height: 2rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-    font-size: large;
-  }
+  // .chat-header{
+  //   height: 2rem;
+  //   text-overflow: ellipsis;
+  //   white-space: nowrap;
+  //   overflow: hidden;
+  //   font-size: large;
+  // }
   .chat-content{
     flex: 1;
     padding-top: 0.25rem;
     padding-right: 1rem;
     overflow-y: scroll;
+    margin: 0 auto;
+    width: 100%;
   }
   .start-tip{
     text-align: center;
@@ -262,8 +252,6 @@
         border: none;
         line-height: 1.75rem;
         height: auto;
-        font-size: 16px;
-        // max-height: 6rem !important;
         overflow-y: auto;
         resize: none;
         color: var(--color-text-2);

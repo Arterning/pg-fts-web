@@ -182,6 +182,7 @@
     flex-direction: column;
     overflow-y: auto;
     height: 80vh;
+    width: 220px;
   }
 
   /* 自定义滚动条的样式 */
