@@ -24,7 +24,10 @@
                 </div>
                 <a-divider />
             </a-descriptions-item>
- 
+            <a-descriptions-item label="用户账号">
+                <!-- <pre class="content-box"> -->
+                <div v-html="user"></div>
+            </a-descriptions-item>
             <a-descriptions-item label="摘要">
                 <!-- <pre class="content-box"> -->
                 <div class="desc" v-html="descMD"></div>
@@ -77,6 +80,22 @@
       }
       return url;
     }
+
+    const user = computed(()=>{
+        if (!props.info.account_pwd) return '';
+        const data = JSON.parse(props.info.account_pwd);
+        console.log( );
+        
+        let str = '';
+        for( let i = 0; i < data.length; i+=1){
+            const set = Object.values(data[i])
+            str += `${set[0]?set[0]:'-'} | ${set[1]?set[1]:'-'}<br/>`
+        }
+
+        // return marked(props.info.account_pwd); 
+        return str;
+    })
+
 
     const descMD = computed(()=>{
         if (!props.info.desc) return '';
