@@ -79,7 +79,7 @@
           </template> -->
           <template #name="{ record }">
           <a-link
-            @click="router.push({name: 'DocDetail', params: { id: record.id, type: 'doc' }})"
+            @click="router.push({name: 'DocDetail', params: { id: record.id }, query: { type: 'doc' } })"
             class="title-link"
           >{{ record.name }}</a-link>
           </template> 

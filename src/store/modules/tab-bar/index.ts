@@ -43,7 +43,6 @@ const useAppStore = defineStore('tabBar', {
     async updateTabList(route: RouteLocationNormalized, appendix?: string) {
       if (BAN_LIST.includes(route.name as string)) return;
       const tag = await formatTag(route, appendix);
-      console.log(this.tagList);
       
       this.tagList.push(tag);
       if (!route.meta.ignoreCache) {

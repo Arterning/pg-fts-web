@@ -58,10 +58,22 @@
     ) {
       let res;
       if(route.params.id){
-        res = await querySysDocDetail(Number(route.params.id));
-        docStore.add(res as Doc);
+        if(route.query.type === 'doc'){
+          res = await querySysDocDetail(Number(route.params.id));   
+          docStore.add(res as Doc);
+          tabBarStore.updateTabList(route, res?.name);
+        }
+        else if(route.query.type === 'org'){
+          res = await querySysOrgDetail(Number(route.params.id));
+          tabBarStore.updateTabList(route, res?.org_name);
+        }
+        else if(route.query.type === 'assets'){
+          res = await querySysAssetsDetail(Number(route.params.id));
+          tabBarStore.updateTabList(route, res?.assets_name);
+        }
+        
       }
-      tabBarStore.updateTabList(route, res?.name);
+      // tabBarStore.updateTabList(route, res?.name);
     }
   }, true);
 

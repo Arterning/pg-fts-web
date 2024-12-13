@@ -16,6 +16,7 @@
                   <a-col :span="8">
                     <a-form-item :label="$t('data.assets.form.name')" field="assets_name">
                       <a-input
+                        @keyup.enter="search"
                         v-model="formModel.assets_name"
                         :placeholder="$t('data.assets.form.name.placeholder')"
                       />
@@ -27,7 +28,7 @@
             <a-divider direction="vertical" style="height: 30px" />
             <a-col :span="6">
               <a-space :size="'medium'" direction="horizontal">
-                <a-button type="primary">
+                <a-button type="primary" @click="search">
                   <template #icon>
                     <icon-search />
                   </template>
@@ -82,7 +83,7 @@
               </template> -->
               <template #assets_name="{ record }">
                 <a-link
-                  @click="router.push({name: 'AssetsDetail', params: { id: record.id, type: 'assets' }})"
+                  @click="router.push({name: 'AssetsDetail', params: { id: record.id }, query: { type: 'assets' } })"
                   class="title-link"
                 >{{ record.assets_name }}</a-link>
               </template> 
@@ -259,7 +260,8 @@
     deleteSysAssets,
     querySysAssetsDetail,
     updateSysAssets,
-    querySysAssetsList
+    querySysAssetsList,
+    SysAssetsParams
   } from '@/api/assets';
   import { 
     querySysAssetsDetailTest,
@@ -540,7 +542,12 @@
       setLoading(false);
     }
   };
-  
+  // 搜索
+  const search = async () => {
+    await fetchApiList({
+      ...formModel.value,
+    } as unknown as SysAssetsParams);
+  };
 </script>
 
 <style lang="less" scoped>

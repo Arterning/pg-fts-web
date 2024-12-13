@@ -16,6 +16,7 @@
                   <a-col :span="8">
                     <a-form-item :label="$t('data.org.form.name')" field="name">
                       <a-input
+                        @keyup.enter="search"
                         v-model="formModel.name"
                         :placeholder="$t('data.org.form.name.placeholder')"
                       />
@@ -27,7 +28,7 @@
             <a-divider direction="vertical" style="height: 30px" />
             <a-col :span="6">
               <a-space :size="'medium'" direction="horizontal">
-                <a-button type="primary">
+                <a-button type="primary" @click="search">
                   <template #icon>
                     <icon-search />
                   </template>
@@ -82,7 +83,7 @@
               </template> -->
               <template #org_name="{ record }">
                 <a-link
-                  @click="router.push({name: 'OrgDetail', params: { id: record.id, type: 'org' }})"
+                  @click="router.push({name: 'OrgDetail', params: { id: record.id }, query: { type: 'org' } })"
                   class="title-link"
                 >{{ record.org_name }}</a-link>
               </template> 
@@ -212,7 +213,8 @@
     querySysOrgDetail, 
     createSysOrg,
     updateSysOrg,
-    deleteSysOrg
+    deleteSysOrg,
+    SysOrgParams
   } from '@/api/org';
   import { 
     querySysOrgDetailTest,
@@ -363,9 +365,7 @@
     setLoading(true);
     try {
       const res = await querySysOrgList(params);
-
       // const res = querySysOrgListTest(params);
-      console.log(res);
       renderData.value = res;
       // renderData.value = res.items;
       // pagination.total = res.total;
@@ -476,6 +476,13 @@
     } finally {
       setLoading(false);
     }
+  };
+
+    // 搜索
+  const search = async () => {
+    await fetchApiList({
+      ...formModel.value,
+    } as unknown as SysOrgParams);
   };
 </script>
 

@@ -39,8 +39,8 @@
     setLoading(true);
       try {
         if(id){
-          // const res = querySysOrgDetailTest(Number(id[0]));
-          const res = await querySysOrgDetail(Number(id[0]));
+          // const res = querySysOrgDetailTest(Number(id));
+          const res = await querySysOrgDetail(Number(id));
           // console.log(res);
           info.value = res;
         }
