@@ -427,8 +427,6 @@
     setLoading(true);
     try {
       const res = await querySysAssetsList(params);
-      // const res = querySysAssetsListTest(params);
-      // renderData.value = res;
       renderData.value = res.items;
       pagination.total = res.total;
       pagination.current = params.page;
