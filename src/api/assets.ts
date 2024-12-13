@@ -32,7 +32,7 @@ export interface SysAssetsPickParams {
   pk: number[];
 }
 
-export function querySysAssetsList(params: SysAssetsReq): Promise<SysAssetsRes[]> {
+export function querySysAssetsList(params: SysAssetsReq): Promise<SysAssetsListRes> {
   return axios.get('/api/v1/sys/asset', {
     params,
     paramsSerializer: (obj) => {

@@ -157,6 +157,40 @@
                   <a-input-number :placeholder="$t('data.org.form.org_assets_nums.placeholder')" 
                   v-model="form.org_assets_nums" :min="0" mode="button"></a-input-number>
                 </a-form-item>
+                <a-form-item :label="$t('组织文件')" field="docs">
+                  <a-select
+                    v-model="formModel.docs"
+                    :style="{ width: '320px' }"
+                    :loading="docsLoading"
+                    placeholder="文件名搜索"
+                    multiple
+                    @search="handleDocSearch"
+                  >
+                    <a-option
+                      v-for="item of docOptions"
+                      :key="item.value"
+                      :value="item.value"
+                      >{{ item.label }}
+                    </a-option>
+                  </a-select>
+                </a-form-item>
+                <a-form-item :label="$t('组织资产')" field="assets">
+                  <a-select
+                    v-model="formModel.docs"
+                    :style="{ width: '320px' }"
+                    :loading="docsLoading"
+                    placeholder="资产名搜索"
+                    multiple
+                    @search="handleDocSearch"
+                  >
+                    <a-option
+                      v-for="item of docOptions"
+                      :key="item.value"
+                      :value="item.value"
+                      >{{ item.label }}
+                    </a-option>
+                  </a-select>
+                </a-form-item>
                 <a-form-item
                   :label="$t('data.org.form.org_desc')"
                   field="org_desc"
@@ -216,12 +250,9 @@
     deleteSysOrg,
     SysOrgParams
   } from '@/api/org';
-  import { 
-    querySysOrgDetailTest,
-    querySysOrgListTest
-  } from './test';
+  import { querySysDocList, SysDocRes } from '@/api/doc';
   import Detail from './components/org-detail/detail.vue';
-
+  
 
   const { t } = useI18n();
   const { loading, setLoading } = useLoading(true);
@@ -233,6 +264,8 @@
       name: '',
       org_file_nums: 0,
       org_assets_nums: 0,
+      docs: [],
+      assets: [],
       org_desc: '',
       create_time: '',
       update_time: ''
@@ -365,10 +398,8 @@
     setLoading(true);
     try {
       const res = await querySysOrgList(params);
-      // const res = querySysOrgListTest(params);
-      renderData.value = res;
-      // renderData.value = res.items;
-      // pagination.total = res.total;
+      renderData.value = res.items;
+      pagination.total = res.total;
       pagination.current = params.page;
     } catch (error) {
       // console.log(error);
@@ -484,6 +515,35 @@
       ...formModel.value,
     } as unknown as SysOrgParams);
   };
+
+
+  const docsLoading = ref(false);
+  const docs = ref<SysDocRes[]>([]);
+  const docOptions = computed(() => {
+    return docs.value.map((item) => {
+      return {
+        value: item.id,
+        label: item.title,
+      };
+    });
+  });
+
+  const handleDocSearch = async (value: string) => {
+    if (value) {
+      docsLoading.value = true;
+
+      const res = await querySysDocList({
+        name: value,
+      });
+
+      docs.value = res.items;
+
+      docsLoading.value = false;
+    } else {
+      docs.value = [];
+    }
+  };
+
 </script>
 
 <style lang="less" scoped>
