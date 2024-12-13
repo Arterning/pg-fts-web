@@ -87,6 +87,7 @@
                   class="title-link"
                 >{{ record.org_name }}</a-link>
               </template> 
+              
               <template #create_time="{ record }">
                 {{ tableDateFormat(record.create_time) }}
               </template>    

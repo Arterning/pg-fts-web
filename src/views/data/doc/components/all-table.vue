@@ -466,6 +466,7 @@
       setLoading(false);
     }
   };
+  
   fetchApiList({ page: 1, size: pagination.pageSize});
 
   // 请求部门详情

@@ -11,6 +11,7 @@
         >
       </a-card>
       <a-upload
+          multiple
           draggable
           :directory="uploadDirectory"
           :custom-request="customRequest"
