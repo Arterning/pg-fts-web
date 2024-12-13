@@ -445,7 +445,7 @@
     try {
       await extractUserCount( rowSelectKeys.value );
       cancelReq();
-      Message.success(t('submit.delete.success'));
+      Message.success(t('submit.execute.success'));
       rowSelectKeys.value = [];
     } catch (error) {
       Message.warning(t('submit.execute.fail'));
