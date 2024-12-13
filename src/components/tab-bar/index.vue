@@ -28,6 +28,8 @@
   import { useAppStore, useDocStore, useTabBarStore } from '@/store';
   import { querySysDocDetail } from '@/api/doc';
   import { Doc } from '@/store/modules/doc/types';
+  import { querySysOrgDetail } from '@/api/org';
+  import { querySysAssetsDetail } from '@/api/assets';
   import tabItem from './tab-item.vue';
 
   const appStore = useAppStore();

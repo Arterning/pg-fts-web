@@ -108,12 +108,12 @@
           @page-change="onPageChange"
           @page-size-change="onPageSizeChange"
         >
-          <template #index="{ rowIndex }">
+          <!-- <template #index="{ rowIndex }">
             {{ rowIndex + 1 }}
-          </template>
+          </template> -->
           <template #name="{ record }">
           <a-link
-            @click="router.push({name: 'DocDetail', params: { id: record.id }})"
+            @click="router.push({name: 'DocDetail', params: { id: record.id, type: 'doc' }})"
             class="title-link"
           >{{ record.name }}</a-link>
           </template> 
@@ -318,11 +318,14 @@
     const columns = computed<TableColumnData[]>(() => [
       {
         title: 'ID',
-        dataIndex: 'index',
-        slotName: 'index',
+        dataIndex: 'id',
+        slotName: 'id',
+        sortable: {
+          sortDirections: ['ascend', 'descend']
+        },
         ellipsis: true,
         tooltip: true,
-        width: 100,
+        width: 100
       },
       {
         title: t('data.doc.columns.name'),
@@ -352,6 +355,9 @@
         title: t('邮件时间'),
         dataIndex: 'email_time',
         slotName: 'email_time',
+        sortable: {
+          sortDirections: ['ascend', 'descend']
+        },
         ellipsis: true,
       },
       {
@@ -362,7 +368,6 @@
         align: 'center',
       },
     ]);
-  
     // 对话框
     const openNewOrEdit = ref<boolean>(false);
     const openDelete = ref<boolean>(false);

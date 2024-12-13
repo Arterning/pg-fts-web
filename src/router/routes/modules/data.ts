@@ -37,6 +37,52 @@ const DASHBOARD: AppRouteRecordRaw = {
       },
     },
     {
+      path: 'assets',
+      name: 'Assets',
+      component: () => import('@/views/data/assets/index.vue'),
+      meta: {
+        locale: 'menu.data.assets',
+        requiresAuth: true,
+        icon: 'IconFile',
+        roles: ['*'],
+        hideInMenu: false,
+      },
+    },
+    {
+      path: 'assets-detail/:id',
+      name: 'AssetsDetail',
+      component: () => import('@/views/data/assets/components/assets-detail/index.vue'),
+      meta: {
+        locale: 'menu.data.assets.detail',
+        requiresAuth: true,
+        roles: ['*'],
+        hideInMenu: true,
+      },
+    },
+    {
+      path: 'org',
+      name: 'Org',
+      component: () => import('@/views/data/org/index.vue'),
+      meta: {
+        locale: 'menu.data.org',
+        requiresAuth: true,
+        icon: 'IconFile',
+        roles: ['*'],
+        hideInMenu: false,
+      },
+    },
+    {
+      path: 'org-detail/:id',
+      name: 'OrgDetail',
+      component: () => import('@/views/data/org/components/org-detail/index.vue'),
+      meta: {
+        locale: 'menu.data.org.detail',
+        requiresAuth: true,
+        roles: ['*'],
+        hideInMenu: true,
+      },
+    },
+    {
         path: 'upload',
         name: 'Upload',
         component: () => import('@/views/data/upload/index.vue'),

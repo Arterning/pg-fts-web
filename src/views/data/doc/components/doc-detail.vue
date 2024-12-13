@@ -21,7 +21,7 @@
   import useLoading from '@/hooks/loading';
   import { onMounted, ref } from 'vue';
   import { useRoute } from 'vue-router';
-  import { useDocStore } from '@/store';
+  import { useDocStore, useTabBarStore } from '@/store';
   import Footer from '@/components/footer/index.vue';
   import GeneralDetail from './general-detail.vue';
   import ExcelDetail from './excel-detail.vue';

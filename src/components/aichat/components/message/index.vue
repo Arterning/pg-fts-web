@@ -16,13 +16,13 @@
     // 处理内联数学公式（比如: \( ... \)）
     let htmlContent = raw.replace(
       /\\\((.*?)\\\)/g,  // 匹配 \( ... \)
-      (_: any, formula: string) => `<span class="katex">${katex.renderToString(formula)}</span>`
+      (_: any, formula: string) => `<span>${katex.renderToString(formula)}</span>`
     );
 
     // 处理块级数学公式（比如: \[ ... \]）
     htmlContent = htmlContent.replace(
       /\\\[(.*?)\\\]/gs,  // 匹配 \[ ... \]
-      (_: any, formula: string) => `<div class="katex">${katex.renderToString(formula)}</div>`
+      (_: any, formula: string) => `<div>${katex.renderToString(formula)}</div>`
     );
     
     // 处理markdown格式
@@ -70,6 +70,7 @@
     background: transparent;
     color: var(--color-text-2);
     line-height: 2rem;
+    letter-spacing: 1px;
 	}
 	@media (max-width:1600px) {
 		.markdown-body {
@@ -103,10 +104,12 @@
     padding: 0.5rem 1rem;
     word-wrap: break-word;
     word-break: normal;
-    // font-size: 15px;
   }
   .fail-response{
     color:  var(--color-text-2);
+  }
+  .katex{
+    position: relative;
   }
   :deep(.md-editor-preview-wrapper) {
     padding: 4px;

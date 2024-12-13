@@ -3,6 +3,9 @@ export default {
   'menu.data.doc': 'Doc Manage',
   'menu.data.upload': 'Doc Upload',
   'menu.data.doc.detail': 'Doc Content',
+  'menu.data.assets': 'Assets',
+  'menu.data.assets.detail': 'Assets Detail',
+  'menu.data.org': 'Organization',
   // form
   'data.doc.form.title': 'Doc title',
   'data.doc.form.name': 'Doc name',
@@ -23,6 +26,8 @@ export default {
   // button
   'data.doc.button.create': 'Create',
   'data.doc.button.delete': 'Delete',
+  'data.doc.button.ip': 'Extract IP',
+  'data.doc.button.usercount': 'Extract User Count',
   // drawer
   'data.doc.columns.new.drawer': 'Create Doc',
   'data.doc.columns.edit.drawer': 'Edit Doc',
@@ -35,6 +40,7 @@ export default {
   'data.doc.columns.path': 'Doc path',
   'data.doc.columns.method': 'Method',
   'data.doc.columns.remark': 'Remark',
+  'data.doc.columns.createdtime': 'Created',
   'data.doc.columns.operate': 'Operate',
 
   'All': 'All Files',

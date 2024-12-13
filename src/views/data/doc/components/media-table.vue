@@ -79,10 +79,18 @@
           </template>
           <template #name="{ record }">
           <a-link
-            @click="router.push({name: 'DocDetail', params: { id: record.id }})"
+            @click="router.push({name: 'DocDetail', params: { id: record.id, type: 'doc' }})"
             class="title-link"
           >{{ record.name }}</a-link>
           </template> 
+          <template #desc="{ record }">
+            <a-tooltip :content="record.desc" mini>
+              {{ record.desc }}
+            </a-tooltip>
+          </template>         
+          <template #created_time="{ record }">
+            {{ tableDateFormat(record.created_time) }}
+          </template>     
           <template #operate="{ record }">
             <a-space>
               <a-tooltip content="修改">
@@ -214,6 +222,7 @@
   } from '@/api/doc';
   import { Pagination } from '@/types/global';
   import { useRouter } from 'vue-router';
+  import { tableDateFormat } from '@/utils/date';
   import GeneralDetail from './general-detail.vue';
 
   const { t } = useI18n();
@@ -279,11 +288,14 @@
   const columns = computed<TableColumnData[]>(() => [
     {
       title: 'ID',
-      dataIndex: 'index',
-      slotName: 'index',
+      dataIndex: 'id',
+      slotName: 'id',
+      sortable: {
+        sortDirections: ['ascend', 'descend']
+      },
       ellipsis: true,
       tooltip: true,
-      width: 100,
+      width: 100
     },
     {
       title: t('data.doc.columns.name'),
@@ -292,11 +304,27 @@
       ellipsis: true,
     },
     {
+      title: t('data.doc.columns.desc'),
+      dataIndex: 'desc',
+      slotName: 'desc',
+      ellipsis: true,
+      tooltip: true,
+    },
+    {
+      title: t('data.doc.columns.createdtime'),
+      dataIndex: 'created_time',
+      slotName: 'created_time',
+      sortable: {
+        sortDirections: ['ascend', 'descend']
+      },
+      width: 180
+    },
+    {
       title: t('data.doc.columns.operate'),
       dataIndex: 'operate',
       slotName: 'operate',
-      align: 'center',
       width: 150,
+      align: 'center',
     },
   ]);
 

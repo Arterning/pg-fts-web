@@ -48,7 +48,7 @@
           {{ $t('data.doc.button.create') }}
         </a-button>
         <a-button
-          :disabled="deleteButtonStatus()"
+          :disabled="selectStatus()"
           status="danger"
           @click="DeleteApi"
         >
@@ -57,12 +57,26 @@
           </template>
           {{ $t('data.doc.button.delete') }}
         </a-button>
+        <a-divider direction="vertical" style="height: 30px" />
+        <a-button
+          :disabled="selectStatus()"
+          type="primary"
+          @click="submitExtractIPAddress"
+        >
+          {{ $t('data.doc.button.ip') }}
+        </a-button>
+        <a-button
+          :disabled="selectStatus()"
+          type="primary"
+          @click="submitExtractUsercount"
+        >
+          {{ $t('data.doc.button.usercount') }}
+        </a-button>
       </a-space>
       <div class="content"> 
         <a-table
           v-model:selected-keys="rowSelectKeys"
           :bordered="false"
-          column-resizable
           :columns="columns"
           :data="renderData"
           :loading="loading"
@@ -73,15 +87,18 @@
           @page-change="onPageChange"
           @page-size-change="onPageSizeChange"
         >
-          <template #index="{ rowIndex }">
+          <!-- <template #index="{ rowIndex }">
             {{ rowIndex + 1 }}
-          </template>
+          </template> -->
           <template #name="{ record }">
-          <a-link
-            @click="router.push({name: 'DocDetail', params: { id: record.id }})"
-            class="title-link"
-          >{{ record.name }}</a-link>
-          </template>              
+            <a-link
+              @click="router.push({name: 'DocDetail', params: { id: record.id, type: 'doc' }})"
+              class="title-link"
+            >{{ record.name }}</a-link>
+          </template>      
+          <template #created_time="{ record }">
+            {{ tableDateFormat(record.created_time) }}
+          </template>     
           <template #operate="{ record }">
             <a-space>
               <a-tooltip content="修改">
@@ -209,6 +226,8 @@
   import {
     createSysDoc,
     deleteSysDoc,
+    extractIPAddress,
+    extractUserCount,
     querySysDocDetail,
     querySysDocList,
     SysDocParams,
@@ -218,6 +237,7 @@
   } from '@/api/doc';
   import { Pagination } from '@/types/global';
   import { useRouter } from 'vue-router';
+  import { tableDateFormat } from '@/utils/date';
   import GeneralDetail from './general-detail.vue';
   import ExcelDetail from './excel-detail.vue';
 
@@ -284,8 +304,11 @@
   const columns = computed<TableColumnData[]>(() => [
     {
       title: 'ID',
-      dataIndex: 'index',
-      slotName: 'index',
+      dataIndex: 'id',
+      slotName: 'id',
+      sortable: {
+        sortDirections: ['ascend', 'descend']
+      },
       ellipsis: true,
       tooltip: true,
       width: 100
@@ -297,11 +320,20 @@
       ellipsis: true,
     },
     {
-      title: t('文件类型'),
-      dataIndex: 'type',
-      slotName: 'type',
+      title: t('data.doc.columns.desc'),
+      dataIndex: 'desc',
+      slotName: 'desc',
       ellipsis: true,
-      width: 100,
+      tooltip: true,
+    },
+    {
+      title: t('data.doc.columns.createdtime'),
+      dataIndex: 'created_time',
+      slotName: 'created_time',
+      sortable: {
+        sortDirections: ['ascend', 'descend']
+      },
+      width: 180
     },
     {
       title: t('data.doc.columns.operate'),
@@ -366,8 +398,8 @@
     }
   };
 
-  // 删除按钮状态
-  const deleteButtonStatus = () => {
+  // 选取式按钮状态
+  const selectStatus = () => {
     return rowSelectKeys.value?.length === 0;
   };
 
@@ -377,14 +409,41 @@
     try {
       await deleteSysDoc({ pk: rowSelectKeys.value });
       cancelReq();
-      Message.success(t('submit.delete.success'));
-      await fetchApiList({ page: 1, size: pagination.pageSize});
+      Message.success(t('submit.execute.success'));
       rowSelectKeys.value = [];
     } catch (error) {
-      openDelete.value = false;
-      // console.log(error);
+      Message.success(t('submit.execute.fail'));
     } finally {
-      openDelete.value = false;
+      setLoading(false);
+    }
+  };
+
+  // ip提取按钮
+  const submitExtractIPAddress = async () => {
+    setLoading(true);
+    try {
+      await extractIPAddress({ pk: rowSelectKeys.value });
+      cancelReq();
+      Message.success(t('submit.execute.success'));
+      rowSelectKeys.value = [];
+    } catch (error) {
+      Message.warning(t('submit.execute.fail'));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 用户名账号提取按钮
+  const submitExtractUsercount = async () => {
+    setLoading(true);
+    try {
+      await extractUserCount({ pk: rowSelectKeys.value });
+      cancelReq();
+      Message.success(t('submit.delete.success'));
+      rowSelectKeys.value = [];
+    } catch (error) {
+      Message.warning(t('submit.execute.fail'));
+    } finally {
       setLoading(false);
     }
   };

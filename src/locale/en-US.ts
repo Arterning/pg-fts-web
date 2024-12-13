@@ -9,6 +9,8 @@ import localeServerMonitor from '@/views/monitor/server/locale/en-US';
 import localeRedisMonitor from '@/views/monitor/redis/locale/en-US';
 import localeSysApi from '@/views/admin/api/locale/en-US';
 import localSysDoc from '@/views/data/doc/locale/en-US';
+import localSysOrg from '@/views/data/org/locale/en-US'
+import localeSysAssets from '@/views/data/assets/locale/en-US';
 import localeSysUser from '@/views/admin/user/locale/en-US';
 import localeSysRole from '@/views/admin/role/locale/en-US';
 import localeGenerator from '@/views/automation/code-generator/local/en-US';
@@ -32,6 +34,8 @@ export default {
   'submit.create.success': 'Created success',
   'submit.update.success': 'Updated success',
   'submit.delete.success': 'Deleted success',
+  'submit.execute.success': 'Executed success',
+  'submit.execute.fail': 'Executed fail',
   'copy.success': 'Copy success',
   'copy.error': 'Copy failed',
   ...localeSettings,
@@ -42,6 +46,7 @@ export default {
   ...localeIconPicker,
   ...localeLogOpera,
   ...localeSysDept,
+  ...localSysOrg,
   ...localeServerMonitor,
   ...localeRedisMonitor,
   ...localeSysApi,
@@ -49,4 +54,5 @@ export default {
   ...localeSysRole,
   ...localeGenerator,
   ...localSysDoc,
+  ...localeSysAssets
 };

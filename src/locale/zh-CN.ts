@@ -9,6 +9,8 @@ import localeSysApi from '@/views/admin/api/locale/zh-CN';
 import localeServerMonitor from '@/views/monitor/server/locale/zh-CN';
 import localeRedisMonitor from '@/views/monitor/redis/locale/zh-CN';
 import localSysDoc from '@/views/data/doc/locale/zh-CN';
+import localSysOrg from '@/views/data/org/locale/zh-CN';
+import localeSysAssets from '@/views/data/assets/locale/zh-CN';
 import localeSysUser from '@/views/admin/user/locale/zh-CN';
 import localeSysRole from '@/views/admin/role/locale/zh-CN';
 import localeGenerator from '@/views/automation/code-generator/local/zh-CN';
@@ -32,6 +34,8 @@ export default {
   'submit.create.success': '创建成功',
   'submit.update.success': '更新成功',
   'submit.delete.success': '删除成功',
+  'submit.execute.success': '执行成功',
+  'submit.execute.fail': '执行失败',
   'copy.success': '复制成功',
   'copy.error': '复制失败',
   ...localeSettings,
@@ -49,4 +53,6 @@ export default {
   ...localeSysRole,
   ...localeGenerator,
   ...localSysDoc,
+  ...localSysOrg,
+  ...localeSysAssets
 };

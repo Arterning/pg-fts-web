@@ -45,7 +45,8 @@ export interface SysDocListRes {
   total: number;
 }
 
-export interface SysDocDeleteParams {
+
+export interface SysDocPickParams {
   pk: number[];
 }
 
@@ -83,8 +84,27 @@ export function updateSysDoc(pk: number, data: SysDocReq) {
   return axios.put(`/api/v1/sys/docs/${pk}`, data);
 }
 
-export function deleteSysDoc(params: SysDocDeleteParams) {
+export function deleteSysDoc(params: SysDocPickParams) {
   return axios.delete(`/api/v1/sys/docs`, {
+    params,
+    paramsSerializer: (obj) => {
+      return qs.stringify(obj);
+    },
+  });
+}
+
+export function extractIPAddress(params: SysDocPickParams) {
+  return axios.delete(`/api/v1/`, {
+    params,
+    paramsSerializer: (obj) => {
+      return qs.stringify(obj);
+    },
+  });
+}
+
+
+export function extractUserCount(params: SysDocPickParams) {
+  return axios.delete(`/api/v1/`, {
     params,
     paramsSerializer: (obj) => {
       return qs.stringify(obj);

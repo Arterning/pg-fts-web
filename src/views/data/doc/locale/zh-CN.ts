@@ -3,6 +3,10 @@ export default {
   'menu.data.doc': '文件管理',
   'menu.data.upload': '文件上传',
   'menu.data.doc.detail': '文件内容',
+  'menu.data.assets': '资产管理',
+  'menu.data.assets.detail': '资产详情',
+  'menu.data.org.detail': '组织详情',
+  'menu.data.org': '组织管理',
   // form
   'data.doc.form.title': '文件标题',
   'data.doc.form.name': '文件名称',
@@ -23,6 +27,8 @@ export default {
   // button
   'data.doc.button.create': '新增',
   'data.doc.button.delete': '删除',
+  'data.doc.button.ip': '提取IP地址',
+  'data.doc.button.usercount': '提取用户账号',
   // drawer
   'data.doc.columns.new.drawer': '新增文件',
   'data.doc.columns.edit.drawer': '编辑文件',
@@ -34,6 +40,7 @@ export default {
   'data.doc.columns.name': '文件名称',
   'data.doc.columns.path': '文件路径',
   'data.doc.columns.method': '请求方式',
+  'data.doc.columns.createdtime': '创建日期',
   'data.doc.columns.remark': '备注',
   'data.doc.columns.operate': '操作',
 
