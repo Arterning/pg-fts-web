@@ -95,7 +95,10 @@
               @click="router.push({name: 'DocDetail', params: { id: record.id }, query: { type: 'doc' } })"
               class="title-link"
             >{{ record.name }}</a-link>
-          </template>      
+          </template>     
+          <template #desc="{ record }">
+            {{ cleanMarkdown(record.desc) }}
+          </template> 
           <template #created_time="{ record }">
             {{ tableDateFormat(record.created_time) }}
           </template>     
@@ -238,6 +241,7 @@
   import { Pagination } from '@/types/global';
   import { useRouter } from 'vue-router';
   import { tableDateFormat } from '@/utils/date';
+  import { cleanMarkdown } from '@/utils/string';
   import GeneralDetail from './general-detail.vue';
   import ExcelDetail from './excel-detail.vue';
 

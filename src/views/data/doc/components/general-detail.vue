@@ -26,9 +26,8 @@
             </a-descriptions-item>
  
             <a-descriptions-item label="摘要">
-                <pre class="content-box">
-                {{ info.desc }}
-                </pre>
+                <!-- <pre class="content-box"> -->
+                <div class="desc" v-html="descMD"></div>
             </a-descriptions-item>
             <a-descriptions-item label="预览">
                 <keep-alive>
@@ -64,8 +63,10 @@
 
 <script lang="ts" setup>
     import { emailDateFormat } from '@/utils/date';
+    import { computed } from 'vue';
+    import  { marked } from 'marked';
 
-    defineProps(['info']);
+    const props = defineProps(['info']);
 
     const buildSrcURL = (file: string) => {
       let url;
@@ -76,6 +77,10 @@
       }
       return url;
     }
+
+    const descMD = computed(()=>{
+        return marked(props.info.desc) as string; 
+    })
 </script>
 
 <style lang="less" scoped>
@@ -84,6 +89,10 @@
     width: 70vw;
     max-height: 65vh;
     overflow: auto;
+}
+
+.desc{
+ line-height: 1rem;
 }
 
 .flex{

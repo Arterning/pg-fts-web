@@ -71,9 +71,10 @@
           res = await querySysAssetsDetail(Number(route.params.id));
           tabBarStore.updateTabList(route, res?.assets_name);
         }
-        
       }
-      // tabBarStore.updateTabList(route, res?.name);
+      else{
+        tabBarStore.updateTabList(route);
+      }
     }
   }, true);
 

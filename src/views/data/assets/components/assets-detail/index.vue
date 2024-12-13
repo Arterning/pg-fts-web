@@ -39,7 +39,6 @@
         if(id){
           // const res = querySysAssetsDetailTest(Number(id[0]));
           const res = await querySysAssetsDetail(Number(id));
-          console.log(res);
           info.value = res;
         }
       } catch (error) {

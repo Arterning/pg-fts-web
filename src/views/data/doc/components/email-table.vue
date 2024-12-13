@@ -19,10 +19,10 @@
                 </a-form-item>
               </a-col>
               <a-col :span="8">
-                <a-form-item :label="$t('主题')" field="email_subject">
+                <a-form-item :label="$t('主题')" field="title">
                   <a-input
                     @keyup.enter="search"
-                    v-model="formModel.email_subject"
+                    v-model="formModel.title"
                     :placeholder="$t('搜索主题')"
                   />
                 </a-form-item>
@@ -116,7 +116,13 @@
             @click="router.push({name: 'DocDetail', params: { id: record.id }, query: { type: 'doc' } })"
             class="title-link"
           >{{ record.name }}</a-link>
+          </template>
+          <template #desc="{ record }">
+            {{ cleanMarkdown(record.desc) }}
           </template> 
+          <template #created_time="{ record }">
+            {{ tableDateFormat(record.created_time) }}
+          </template>      
           <template #operate="{ record }">
             <a-space>
               <a-tooltip content="修改">
@@ -248,6 +254,8 @@
       updateSysDoc,
     } from '@/api/doc';
     import { Pagination } from '@/types/global';
+    import { cleanMarkdown } from '@/utils/string';
+    import { tableDateFormat } from '@/utils/date';
     import { useRouter } from 'vue-router';
     import GeneralDetail from './general-detail.vue';
   
@@ -317,57 +325,47 @@
     };
     const columns = computed<TableColumnData[]>(() => [
       {
-        title: 'ID',
-        dataIndex: 'id',
-        slotName: 'id',
-        sortable: {
-          sortDirections: ['ascend', 'descend']
-        },
-        ellipsis: true,
-        tooltip: true,
-        width: 100
+      title: 'ID',
+      dataIndex: 'id',
+      slotName: 'id',
+      sortable: {
+        sortDirections: ['ascend', 'descend']
       },
-      {
-        title: t('data.doc.columns.name'),
-        dataIndex: 'name',
-        slotName: 'name',
-        ellipsis: true,
+      ellipsis: true,
+      tooltip: true,
+      width: 100
+    },
+    {
+      title: t('data.doc.columns.name'),
+      dataIndex: 'name',
+      slotName: 'name',
+      ellipsis: true,
+    },
+    {
+      title: t('data.doc.columns.desc'),
+      dataIndex: 'desc',
+      slotName: 'desc',
+      ellipsis: true,
+      tooltip: true,
+    },
+    {
+      title: t('data.doc.columns.createdtime'),
+      dataIndex: 'created_time',
+      slotName: 'created_time',
+      sortable: {
+        sortDirections: ['ascend', 'descend']
       },
-      {
-        title: t('邮件主题'),
-        dataIndex: 'email_subject',
-        slotName: 'email_subject',
-        ellipsis: true,
-      },
-      {
-        title: t('邮件发送人'),
-        dataIndex: 'email_from',
-        slotName: 'email_from',
-        ellipsis: true,
-      },
-      {
-        title: t('邮件接受人'),
-        dataIndex: 'email_to',
-        slotName: 'email_to',
-        ellipsis: true,
-      },
-      {
-        title: t('邮件时间'),
-        dataIndex: 'email_time',
-        slotName: 'email_time',
-        sortable: {
-          sortDirections: ['ascend', 'descend']
-        },
-        ellipsis: true,
-      },
-      {
-        title: t('data.doc.columns.operate'),
-        dataIndex: 'operate',
-        slotName: 'operate',
-        width: 150,
-        align: 'center',
-      },
-    ]);
+      width: 180
+    },
+    {
+      title: t('data.doc.columns.operate'),
+      dataIndex: 'operate',
+      slotName: 'operate',
+      width: 150,
+      align: 'center',
+    },
+  ]);
+
     // 对话框
     const openNewOrEdit = ref<boolean>(false);
     const openDelete = ref<boolean>(false);

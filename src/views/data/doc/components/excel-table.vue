@@ -92,10 +92,8 @@
           >{{ record.name }}</a-link>
           </template> 
           <template #desc="{ record }">
-            <a-tooltip :content="record.desc" mini>
-              {{ record.desc }}
-            </a-tooltip>
-          </template>         
+            {{ cleanMarkdown(record.desc) }}
+          </template>       
           <template #created_time="{ record }">
             {{ tableDateFormat(record.created_time) }}
           </template>     
@@ -231,8 +229,10 @@
     } from '@/api/doc';
     import { Pagination } from '@/types/global';
     import { tableDateFormat } from '@/utils/date';
+    import { cleanMarkdown } from '@/utils/string';
     import ExcelDetail from '@/views/data/doc/components/excel-detail.vue';
     import { useRouter } from 'vue-router';
+
 
     
     const { t } = useI18n();
