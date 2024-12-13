@@ -58,6 +58,6 @@
 <style scoped lang="less">
 .content-box{
   border:none;    
-  width: 100%;
+  // width: 70vw;
 }
 </style>

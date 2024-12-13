@@ -31,7 +31,7 @@ export interface SysOrgPickParams {
 }
 
 
-export function querySysOrgList(params: SysOrgReq): Promise<SysOrgRes[]> {
+export function querySysOrgList(params: SysOrgReq): Promise<SysOrgListRes> {
   return axios.get('/api/v1/sys/org', {
     params,
     paramsSerializer: (obj) => {

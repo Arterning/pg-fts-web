@@ -79,21 +79,22 @@
     }
 
     const descMD = computed(()=>{
+        if (!props.info.desc) return '';
         return marked(props.info.desc) as string; 
     })
 </script>
 
 <style lang="less" scoped>
 .content-box{
-    // display: flex;
     width: 70vw;
-    max-height: 65vh;
     overflow: auto;
+    background-color: var(--color-bg-1);
+    padding: 0 1rem;
 }
 
-.desc{
- line-height: 1rem;
-}
+// .desc{
+// //  line-height: 1rem;
+// }
 
 .flex{
     display:flex;

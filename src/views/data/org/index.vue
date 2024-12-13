@@ -88,8 +88,8 @@
                 >{{ record.org_name }}</a-link>
               </template> 
               
-              <template #create_time="{ record }">
-                {{ tableDateFormat(record.create_time) }}
+              <template #created_time="{ record }">
+                {{ tableDateFormat(record.created_time) }}
               </template>    
               <template #operate="{ record }">
                 <a-space>
@@ -235,8 +235,8 @@
       org_file_nums: 0,
       org_assets_nums: 0,
       org_desc: '',
-      create_time: '',
-      update_time: ''
+      created_time: '',
+      updated_time: ''
     };
   };
 
@@ -255,8 +255,8 @@
     org_file_nums: 0,
     org_assets_nums: 0,
     org_desc: '',
-    create_time: '',
-    update_time: ''
+    created_time: '',
+    updated_time: ''
   };
 
   const form = reactive<any>({ ...formDefaultValues });
@@ -322,9 +322,9 @@
       ellipsis: true,
     },  
     {
-      title: t('data.org.columns.create_time'),
-      dataIndex: 'create_time',
-      slotName: 'create_time',
+      title: t('data.org.columns.created_time'),
+      dataIndex: 'created_time',
+      slotName: 'created_time',
       sortable: {
         sortDirections: ['ascend', 'descend']
       },
@@ -367,9 +367,9 @@
     try {
       const res = await querySysOrgList(params);
       // const res = querySysOrgListTest(params);
-      renderData.value = res;
-      // renderData.value = res.items;
-      // pagination.total = res.total;
+      // renderData.value = res;
+      renderData.value = res.items;
+      pagination.total = res.total;
       pagination.current = params.page;
     } catch (error) {
       // console.log(error);

@@ -106,8 +106,8 @@
                   {{ $t(`data.assets.status.${record.assets_status}`) }}
                 </a-tag>
               </template>
-              <template #create_time="{ record }">
-                {{ tableDateFormat(record.create_time) }}
+              <template #created_time="{ record }">
+                {{ tableDateFormat(record.created_time) }}
               </template>    
               <template #operate="{ record }">
                 <a-space>
@@ -283,8 +283,8 @@
       assets_desc: '',
       assets_status: true,
       assets_remarks: '',
-      create_time: '',
-      update_time: ''
+      created_time: '',
+      updated_time: ''
     };
   };
 
@@ -306,8 +306,8 @@
     assets_desc: '',
     assets_status: true,
     assets_remarks: '',
-    create_time: '',
-    update_time: ''
+    created_time: '',
+    updated_time: ''
   };
 
   const form = reactive<any>({ ...formDefaultValues });
@@ -383,9 +383,9 @@
       width: 100
     },
     {
-      title: t('data.assets.columns.create_time'),
-      dataIndex: 'create_time',
-      slotName: 'create_time',
+      title: t('data.assets.columns.created_time'),
+      dataIndex: 'created_time',
+      slotName: 'created_time',
       sortable: {
         sortDirections: ['ascend', 'descend']
       },
@@ -428,9 +428,9 @@
     try {
       const res = await querySysAssetsList(params);
       // const res = querySysAssetsListTest(params);
-      renderData.value = res;
-      // renderData.value = res.items;
-      // pagination.total = res.total;
+      // renderData.value = res;
+      renderData.value = res.items;
+      pagination.total = res.total;
       pagination.current = params.page;
     } catch (error) {
       // console.log(error);

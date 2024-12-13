@@ -93,21 +93,11 @@ export function deleteSysDoc(params: SysDocPickParams) {
   });
 }
 
-export function extractIPAddress(params: SysDocPickParams) {
-  return axios.delete(`/api/v1/`, {
-    params,
-    paramsSerializer: (obj) => {
-      return qs.stringify(obj);
-    },
-  });
+export function extractIPAddress(params: number[]) {
+  return axios.post(`/api/v1/sys/ip_addr`, params);
 }
 
 
-export function extractUserCount(params: SysDocPickParams) {
-  return axios.delete(`/api/v1/`, {
-    params,
-    paramsSerializer: (obj) => {
-      return qs.stringify(obj);
-    },
-  });
+export function extractUserCount(params: number[]) {
+  return axios.post(`/api/v1/sys/account_pwd`, params);
 }

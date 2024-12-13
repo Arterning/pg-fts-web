@@ -59,14 +59,14 @@
         </a-button>
         <a-divider direction="vertical" style="height: 30px" />
         <a-button
-          :disabled="selectStatus()"
+          :disabled="selectStatus()||loading"
           type="primary"
           @click="submitExtractIPAddress"
         >
           {{ $t('data.doc.button.ip') }}
         </a-button>
         <a-button
-          :disabled="selectStatus()"
+          :disabled="selectStatus()||loading"
           type="primary"
           @click="submitExtractUsercount"
         >
@@ -426,7 +426,9 @@
   const submitExtractIPAddress = async () => {
     setLoading(true);
     try {
-      await extractIPAddress({ pk: rowSelectKeys.value });
+      console.log(rowSelectKeys.value);
+      
+      await extractIPAddress( rowSelectKeys.value );
       cancelReq();
       Message.success(t('submit.execute.success'));
       rowSelectKeys.value = [];
@@ -441,7 +443,7 @@
   const submitExtractUsercount = async () => {
     setLoading(true);
     try {
-      await extractUserCount({ pk: rowSelectKeys.value });
+      await extractUserCount( rowSelectKeys.value );
       cancelReq();
       Message.success(t('submit.delete.success'));
       rowSelectKeys.value = [];
