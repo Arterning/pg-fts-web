@@ -209,7 +209,7 @@
                   :label="$t('data.assets.form.assets_remarks')"
                   field="assets_remarks"
                 >
-                  <a-input-tag v-model="form.assets_remarks" 
+                  <a-input v-model="form.assets_remarks" 
                   :placeholder="$t('data.assets.form.assets_remarks.placeholder')" allow-clear/>
                 </a-form-item>
               </a-form>
@@ -282,7 +282,7 @@
       assets_services: [],
       assets_desc: '',
       assets_status: true,
-      assets_remarks: [],
+      assets_remarks: '',
       create_time: '',
       update_time: ''
     };
@@ -305,7 +305,7 @@
     assets_services: [],
     assets_desc: '',
     assets_status: true,
-    assets_remarks: [],
+    assets_remarks: '',
     create_time: '',
     update_time: ''
   };
