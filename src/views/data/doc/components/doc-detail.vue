@@ -6,6 +6,7 @@
         <a-card v-if="info" class="content-box">
           <ExcelDetail v-if="info.type==='excel'" 
           :title="info.title" 
+          :desc="info.desc"
           :doc_data="info.doc_data" 
           :file="info.file"/>
           <GeneralDetail v-else :info="info" />

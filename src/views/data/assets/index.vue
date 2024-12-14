@@ -534,6 +534,7 @@
       cancelReq();
       Message.success(t('submit.execute.success'));
       rowSelectKeys.value = [];
+      await fetchApiList({ page: 1, size: pagination.pageSize});
     } catch (error) {
       Message.success(t('submit.execute.fail'));
     } finally {

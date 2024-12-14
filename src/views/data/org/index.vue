@@ -160,7 +160,7 @@
                 </a-form-item>
                 <a-form-item :label="$t('组织文件')" field="docs">
                   <a-select
-                    v-model="formModel.docs"
+                    v-model="form.docs"
                     :style="{ width: '320px' }"
                     :loading="docsLoading"
                     placeholder="文件名搜索"
@@ -177,15 +177,15 @@
                 </a-form-item>
                 <a-form-item :label="$t('组织资产')" field="assets">
                   <a-select
-                    v-model="formModel.docs"
+                    v-model="form.assets"
                     :style="{ width: '320px' }"
-                    :loading="docsLoading"
+                    :loading="assetsLoading"
                     placeholder="资产名搜索"
                     multiple
-                    @search="handleDocSearch"
+                    @search="handleAssetSearch"
                   >
                     <a-option
-                      v-for="item of docOptions"
+                      v-for="item of assetOptions"
                       :key="item.value"
                       :value="item.value"
                       >{{ item.label }}
@@ -243,6 +243,7 @@
     Message,
     TableColumnData,
   } from '@arco-design/web-vue';
+  import { querySysAssetsList, SysAssetsRes } from '@/api/assets';
   import { 
     querySysOrgList,
     querySysOrgDetail, 
@@ -288,8 +289,8 @@
     org_file_nums: 0,
     org_assets_nums: 0,
     org_desc: '',
-    created_time: '',
-    updated_time: ''
+    docs: [],
+    assets: [],
   };
 
   const form = reactive<any>({ ...formDefaultValues });
@@ -390,6 +391,10 @@
     Object.keys(data).forEach((key) => {
       // @ts-ignore
       form[key] = data[key];
+      docs.value = form.docs;
+      assets.value = form.assets;
+      form.docs = data.docs.map((item: Record<any, any>) => item.id);
+      form.assets = data.assets.map((item: Record<any, any>) => item.id);
     });
   };
 
@@ -503,6 +508,7 @@
       cancelReq();
       Message.success(t('submit.execute.success'));
       rowSelectKeys.value = [];
+      await fetchApiList({ page: 1, size: pagination.pageSize});
     } catch (error) {
       Message.success(t('submit.execute.fail'));
     } finally {
@@ -545,6 +551,33 @@
     }
   };
 
+
+  const assetsLoading = ref(false);
+  const assets = ref<SysAssetsRes[]>([]);
+  const assetOptions = computed(() => {
+    return assets.value.map((item) => {
+      return {
+        value: item.id,
+        label: item.assets_name,
+      };
+    });
+  });
+
+  const handleAssetSearch = async (value: string) => {
+    if (value) {
+      assetsLoading.value = true;
+
+      const res = await querySysAssetsList({
+        assets_name: value,
+      });
+
+      assets.value = res.items;
+
+      assetsLoading.value = false;
+    } else {
+      docs.value = [];
+    }
+  };
 </script>
 
 <style lang="less" scoped>

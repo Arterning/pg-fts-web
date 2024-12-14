@@ -4,9 +4,9 @@
             <a-descriptions-item label="标题">
                 {{ title }}
             </a-descriptions-item>
-            <!-- <a-descriptions-item label="内容"> -->
-
-            <!-- </a-descriptions-item> -->
+            <a-descriptions-item label="简介">
+                {{ desc }}
+            </a-descriptions-item>
             <a-descriptions-item label="原始文件">
                 <a-link @click="handleView(file)">查看</a-link>
             </a-descriptions-item>
@@ -79,6 +79,10 @@ const columns = computed(() => {
 });
 const props = defineProps({
     title: {
+        type: String,
+        default: '',
+    },
+    desc: {
         type: String,
         default: '',
     },
