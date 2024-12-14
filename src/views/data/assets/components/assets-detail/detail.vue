@@ -24,11 +24,12 @@
             {{ info.assets_status? '正常': '异常' }}
         </a-descriptions-item>
         <a-descriptions-item label="备注">
-          <ol v-if="info.assets_remarks.length > 0">
-            <li v-for="item, index in info.assets_remarks" :key="index">
-            {{ item }}
-            </li>
-          </ol>
+          <!-- <ol v-if="info.assets_remarks.length > 0">
+            <li v-for="item, index in info.assets_remarks" :key="index"> -->
+            <!-- {{ item }} -->
+            <!-- </li>
+          </ol> -->
+          {{ info.assets_remarks }}
         </a-descriptions-item>
     </a-descriptions>
   </a-space>        

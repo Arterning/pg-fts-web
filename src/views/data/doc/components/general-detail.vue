@@ -26,7 +26,8 @@
             </a-descriptions-item>
             <a-descriptions-item label="用户账号">
                 <!-- <pre class="content-box"> -->
-                <div v-html="user"></div>
+                <div v-if="info.account_pwd" v-html="user"></div>
+                <div v-else>未提取</div>
             </a-descriptions-item>
             <a-descriptions-item label="摘要">
                 <!-- <pre class="content-box"> -->
@@ -106,6 +107,7 @@
 <style lang="less" scoped>
 .content-box{
     width: 70vw;
+    height: 360px;
     overflow: auto;
     background-color: var(--color-bg-1);
     padding: 0 1rem;

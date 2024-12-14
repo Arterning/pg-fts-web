@@ -13,8 +13,8 @@ export default {
   'data.assets.form.assets_status': 'Status',
   'data.assets.form.assets_status.true': 'Normal',
   'data.assets.form.assets_status.false': 'Abnormal',
-  'data.assets.form.assets_remarks': '备注',
-  'data.assets.form.assets_remarks.placeholder': '输入内容并按下回车键（Enter）以添加备注',
+  'data.assets.form.assets_remarks': 'Remark',
+  'data.assets.form.assets_remarks.placeholder': 'Please enter the Remarks',
   'data.assets.form.search': 'Search',
   'data.assets.form.reset': 'Reset',
   // button

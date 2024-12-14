@@ -15,7 +15,7 @@ export default {
   'data.assets.form.assets_status.true': '正常',
   'data.assets.form.assets_status.false': '异常',
   'data.assets.form.assets_remarks': '备注',
-  'data.assets.form.assets_remarks.placeholder': '输入内容并按下回车键（Enter）以添加备注',
+  'data.assets.form.assets_remarks.placeholder': '请输入备注内容',
   'data.assets.form.selectDefault': '全部',
   'data.assets.form.search': '搜索',
   'data.assets.form.reset': '重置',
