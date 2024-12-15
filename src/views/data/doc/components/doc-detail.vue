@@ -38,7 +38,7 @@
   
   onMounted(()=>{
     setLoading(true);
-    const max = 10* 1000; // 超时时间
+    const max = 30* 1000; // 超时时间
     const slice = 200; // 每次检查间隔时间
     const maxNumber = max / slice;
     let count = 0

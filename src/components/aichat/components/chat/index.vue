@@ -205,9 +205,10 @@
 
 <style lang="less" scoped>  
   .chat-container{
-    padding: 1.25rem 10vw;
+    padding: 1.25rem 0;
     min-width: 720px;
     display: flex;
+    align-items: center;
     height: 100%;
     flex-direction: column;
   }
@@ -220,11 +221,8 @@
   // }
   .chat-content{
     flex: 1;
-    padding-top: 0.25rem;
-    padding-right: 1rem;
+    padding: 0.5rem;
     overflow-y: scroll;
-    margin: 0 auto;
-    // width: 100%;
   }
   .start-tip{
     text-align: center;

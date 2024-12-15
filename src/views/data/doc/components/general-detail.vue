@@ -25,9 +25,9 @@
                 <a-divider />
             </a-descriptions-item>
             <a-descriptions-item label="用户账号">
-                <!-- <pre class="content-box"> -->
-                <div v-if="info.account_pwd" v-html="user"></div>
-                <div v-else>未提取</div>
+                <div v-if="!info.account_pwd">未提取</div>
+                <div v-if="info.account_pwd==='[]'">无</div>
+                <div v-else  v-html="user"></div>
             </a-descriptions-item>
             <a-descriptions-item label="摘要">
                 <!-- <pre class="content-box"> -->
@@ -142,7 +142,7 @@
 }
 
 .email-label{
-    width:3rem;
+    min-width:3rem;
     text-align: justify;
     text-align-last: justify;
     margin-right: 1rem;

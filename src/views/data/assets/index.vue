@@ -16,9 +16,16 @@
                   <a-col :span="8">
                     <a-form-item :label="$t('data.assets.form.name')" field="assets_name">
                       <a-input
-                        @keyup.enter="search"
                         v-model="formModel.assets_name"
                         :placeholder="$t('data.assets.form.name.placeholder')"
+                      />
+                    </a-form-item>
+                  </a-col>
+                  <a-col :span="8">
+                    <a-form-item :label="$t('data.assets.form.ip_addr')" field="ip_addr">
+                      <a-input
+                        v-model="formModel.ip_addr"
+                        :placeholder="$t('data.assets.form.ip_addr.placeholder')"
                       />
                     </a-form-item>
                   </a-col>
